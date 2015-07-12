@@ -3,7 +3,6 @@
 # different method
 
 
-
 def main_menu
   puts <<-END
 What would you like to do?
@@ -12,6 +11,10 @@ What would you like to do?
   (C)Update
   (D)Vote
   END
+end
+
+def split_lists(list)
+
 end
 
 def to_continue
@@ -61,34 +64,43 @@ while true # to loop through entire program if user chooses to continue at end
     # create a new person and add them to "candidates" list or "voters" list
       require './create.rb'
       new_person = create
-      p new_person
+      # p new_person
       if new_person.is_a? Candidate
-        candidates += [new_person]
+        candidates << new_person
         puts "#{new_person.name}, the #{new_person.party} #{new_person.class} has been added!"
-        puts candidates # to check that list is updating
-        puts voters # to check that list is updating
+        # puts candidates # to check that list is updating
+        # puts voters # to check that list is updating
       else
-        voters += [new_person]
+        voters << new_person
         puts "#{new_person.name}, the #{new_person.politics} #{new_person.class} has been added!"
-        puts voters # to check that list is updating
+        # puts voters # to check that list is updating
       end
 
     when "c"
     # run the update function with candidates list and voters list as arguments,
     # should return both lists back separately
       require './update.rb'
-      (candidates,voters)=update(candidates,voters)
+      list = update(candidates,voters)
     when "b"
       # call the entries in the candidates and voters lists
+      # list = candidates + voters
+      # list.each do |c|
+      #   require './classes.rb'
+      #   if c.is_a? Candidate
+      #     puts "#{c.class}, #{c.name}, #{c.party}"
+      #   else
+      #     puts "#{c.class}, #{c.name}, #{c.politics}"
+      #   end
+      # end
       list = candidates + voters
-      list.each do |c|
-        require './classes.rb'
-        if c.is_a? Candidate
-          puts "#{c.class}, #{c.name}, #{c.party}"
-        else
-          puts "#{c.class}, #{c.name}, #{c.politics}"
-        end
+      require './classes.rb'
+      candidates.each do |c|
+        puts "#{c.class}, #{c.name}, #{c.party}"
       end
+      voters.each do |v|
+        puts "#{v.class}, #{v.name}, #{v.politics}"
+      end
+
     when "d"
       require './vote.rb'
       pick_vote(candidates,voters)

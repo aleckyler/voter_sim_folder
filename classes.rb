@@ -59,12 +59,16 @@ class Voter
 end
 
 class Candidate < Voter
-  attr_accessor :party, :votes
+  attr_accessor :party, :votes, :name
 
   def initialize(name, party)
     @name = name
     @party = party
     @votes = 1
+  end
+
+  def change_name(new_name)
+    @name = new_name
   end
 
   def politics
@@ -96,7 +100,7 @@ def tally_votes(candidates)
       winner.gsub!(" is","s are #{candidates[i].name} and")
     end
     i+=1
-    p winner
+    # p winner
   end
   winner
 end

@@ -82,6 +82,7 @@ class Candidate < Voter
   def stump(voters)
     voters.each do |v|
       v.listen(self)
+      sleep 1
     end
   end
 end

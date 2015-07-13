@@ -1,6 +1,7 @@
 require './classes.rb'
 def clarification_question(old_name)
   puts <<-END
+
 "Did you mean #{old_name} the voter or #{old_name} the candidate?"
 (A)Voter
 (B)Candidate
@@ -9,6 +10,7 @@ end
 
 def new_cand_party
   puts <<-END
+
 New Party?
   (A)Republican
   (B)Democrat
@@ -17,6 +19,7 @@ end
 
 def new_voter_poli
   puts <<-END
+
 New Politics?
   (A)Progressive
   (B)Conservative
@@ -26,19 +29,19 @@ New Politics?
   END
 end
 
-def update_cand(index_for_change_cand, candidates)
+def update_cand(index_for_change_cand, candidates, old_name)
   # candidates -= [candidates[i]]
   # i=i
   # candidates = candidates
   # p candidates
   # p index_for_change_cand
   # p candidates[index_for_change_cand]
-  puts "New name?"
+  puts "\nNew name?"
   name = gets.chomp.downcase
   # write a check to make sure name is letters and spaces
-  while (/[^a-z ]/===name)
-    puts "That is not a valid name."
-    puts "New name?"
+  while (/[^a-z ]/===name) || name.length == 0
+    puts "\nThat is not a valid name."
+    puts "\nNew name?"
     name = gets.chomp.downcase
   end
   candidates[index_for_change_cand].change_name(name.capitalize)
@@ -46,7 +49,7 @@ def update_cand(index_for_change_cand, candidates)
   new_cand_party
   party_select = gets.chomp.downcase
   until (party_select == "a" || party_select == "b")
-    puts "That is not a valid entry."
+    puts "\nThat is not a valid entry."
     new_cand_party
     party_select = gets.chomp.downcase
   end
@@ -56,18 +59,19 @@ def update_cand(index_for_change_cand, candidates)
     candidates[index_for_change_cand].party = "Democrat"
   end
 
+  puts "\nYou have changed the candidate #{old_name} to #{candidates[index_for_change_cand].name}, the #{candidates[index_for_change_cand].party} candidate!"
   # require './classes.rb'
   # candidates += [Candidate.new(name, party)]
 end
 
-def update_voter(index_for_change_voter, voters)
+def update_voter(index_for_change_voter, voters, old_name)
   # voters -= [voters[j]]
-  puts "New name?"
+  puts "\nNew name?"
   name = gets.chomp.downcase
   # write a check to make sure name is letters and spaces
-  while (/[^a-z ]/===name)
-    puts "That is not a valid name."
-    puts "New name?"
+  while (/[^a-z ]/===name) || name.length == 0
+    puts "\nThat is not a valid name."
+    puts "\nNew name?"
     name = gets.chomp.downcase
   end
   voters[index_for_change_voter].name = name.capitalize
@@ -75,7 +79,7 @@ def update_voter(index_for_change_voter, voters)
   new_voter_poli
   poli_select = gets.chomp.downcase
   until (poli_select == "a" || poli_select == "b" || poli_select == "c" || poli_select == "d" || poli_select == "e")
-    puts "That is not a valid entry."
+    puts "\nThat is not a valid entry."
     new_voter_poli
     poli_select = gets.chomp.downcase
   end
@@ -92,6 +96,7 @@ def update_voter(index_for_change_voter, voters)
     voters[index_for_change_voter].politics = "Independent"
   end
 
+puts "\nYou have changed the voter #{old_name} to #{voters[index_for_change_voter].name}, the #{voters[index_for_change_voter].politics} voter!"
   # require './classes.rb'
   # voters += [Voter.new(name, politics)]
 end
@@ -99,7 +104,7 @@ end
 def update(candidates,voters)
   candidates = candidates
   voters = voters
-  puts "Name?"
+  puts "\nName?"
   old_name = gets.chomp.capitalize
   i=0
   j=0
@@ -108,7 +113,9 @@ def update(candidates,voters)
   while i < candidates.length
   # p old_name
   # p candidates[i].name
-    if old_name == candidates[i].name
+    if candidates.length == 0
+      index_for_change_voter = nil
+    elsif old_name == candidates[i].name
       index_for_change_cand = i
     end
     i += 1
@@ -121,45 +128,45 @@ def update(candidates,voters)
   # p index_for_change_cand
   # search voters for old_name
   # p voters
+  index_for_change_voter = "none"
   while j < voters.length
-    if old_name == voters[j].name
+    if voters.length == 0
+      index_for_change_voter = nil
+    elsif old_name == voters[j].name
       index_for_change_voter = j
-
-    else
-      index_for_change_voter = "none"
     end
     j += 1
   end
     # p index_for_change_voter
 
   if index_for_change_cand == "none" && index_for_change_voter == "none"
-    puts "That name is not currently on the list"
+    puts "\nThat name is not currently on the list"
   elsif !(index_for_change_cand == "none") && index_for_change_voter == "none"
     # candidates -= [candidates[i]]
-    candidates = update_cand(index_for_change_cand, candidates)
+    candidates = update_cand(index_for_change_cand, candidates, old_name)
     # puts "list cand"
     # p candidates
   elsif index_for_change_cand == "none" && !(index_for_change_voter == "none")
     # voters -= [voters[j]]
-    voters = update_voter(index_for_change_voter, voters)
+    voters = update_voter(index_for_change_voter, voters, old_name)
     # puts "list voters"
     # p voters
   else
     clarification_question(old_name)
     clarification = gets.chomp.downcase
     until (clarification == "a" || clarification == "b")
-      puts "That is not a valid entry."
+      puts "\nThat is not a valid entry."
       clarification_question(old_name)
       clarification = gets.chomp.downcase
     end
     if clarification == "a"
       # voters -= [voters[j]]
-      voters = update_voter(index_for_change_voter, voters)
+      voters = update_voter(index_for_change_voter, voters, old_name)
       # puts "list voters"
       # p voters
     else
       # candidates -= [candidates[i]]
-      candidates = update_cand(index_for_change_cand, candidates)
+      candidates = update_cand(index_for_change_cand, candidates, old_name)
       # puts "list cand"
       # p candidates
     end

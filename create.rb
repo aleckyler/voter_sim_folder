@@ -1,5 +1,6 @@
 def create_main
   puts <<-END
+
 What would you like to create?
   (A)Candidate
   (B)Voter
@@ -8,6 +9,7 @@ end
 
 def cand_party
   puts <<-END
+
 Party?
   (A)Republican
   (B)Democrat
@@ -16,6 +18,7 @@ end
 
 def voter_poli
   puts <<-END
+
 Politics?
   (A)Progressive
   (B)Conservative
@@ -26,12 +29,12 @@ Politics?
 end
 
 def create_candidate
-  puts "Name?"
+  puts "\nName?"
   name = gets.chomp.downcase
   # write a check to make sure name is letters and spaces
-  while (/[^a-z ]/===name)
-    puts "That is not a valid name."
-    puts "Name?"
+  while (/[^a-z ]/===name) || name.length == 0
+    puts "\nThat is not a valid name."
+    puts "\nName?"
     name = gets.chomp.downcase
   end
   name = name.capitalize
@@ -39,7 +42,7 @@ def create_candidate
   cand_party
   party_select = gets.chomp.downcase
   until (party_select == "a" || party_select == "b")
-    puts "That is not a valid entry."
+    puts "\nThat is not a valid entry."
     cand_party
     party_select = gets.chomp.downcase
   end
@@ -54,11 +57,11 @@ end
 
 def create_voter
   puts "Name?"
-  name = gets.chomp.downcase
+  name = gets.chomp.downcase || name.length == 0
   # write a check to make sure name is letters and spaces
   while (/[^a-z ]/===name)
-    puts "That is not a valid name."
-    puts "Name?"
+    puts "\nThat is not a valid name."
+    puts "\nName?"
     name = gets.chomp.downcase
   end
   name = name.capitalize
@@ -66,7 +69,7 @@ def create_voter
   voter_poli
   poli_select = gets.chomp.downcase
   until (poli_select == "a" || poli_select == "b" || poli_select == "c" || poli_select == "d" || poli_select == "e")
-    puts "That is not a valid entry."
+    puts "\nThat is not a valid entry."
     voter_poli
     poli_select = gets.chomp.downcase
   end
@@ -95,16 +98,16 @@ def create
   create_main
   choice = gets.chomp.downcase
   until (choice == "a" || choice == "b")
-    puts "That is not a valid entry."
+    puts "\nThat is not a valid entry."
     create_main
     choice = gets.chomp.downcase
   end
   if choice == "a"
     c = create_candidate
 
-    puts c.name
-    puts c.party
-    puts c.class
+    # puts c.name
+    # puts c.party
+    # puts c.class
   else
     c = create_voter
   end
